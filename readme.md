@@ -27,7 +27,7 @@ DESCREVA AS FASES DO JOGO.
 
 ## Esquema de Pontuação
 
-A cada bloco quebrado o score aumenta 10 pontos, em caso de uma longa sequência de acertos esse aumento de pontuação dobra.
+A cada bloco quebrado o score aumenta 10 pontos, em caso de uma longa sequência de acertos esse aumento de pontuação dobra. O jogador possui 3 vidas, perde uma vida sempre que a bola tocar a linha inferior da tela.
 
 
 ## Requisitos
