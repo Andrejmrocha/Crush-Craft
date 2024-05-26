@@ -1,6 +1,6 @@
-import Phaser, { Scale } from "phaser";
+import Phaser from "phaser";
 import MainMenu from "./scenes/MainMenu";
-import { Stage1 } from "./scenes/Stage1";
+import Stage1 from "./scenes/Stage1";
 
 
 const config = {

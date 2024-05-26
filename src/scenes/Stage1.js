@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 
-export class Stage1 extends Scene {
+export default class Stage1 extends Scene {
     constructor() {
         super('Stage1');
         this.totalColunas = 12;
