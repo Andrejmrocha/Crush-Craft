@@ -71,7 +71,7 @@ module.exports = {
                 { from: 'public/assets', to: 'assets' },
                 { from: 'public/favicon.png', to: 'favicon.png' },
                 { from: 'public/style.css', to: 'style.css' },
-                { from: 'dist/index.html', to: 'index.html'}
+                { from: 'public/index.html', to: 'index.html'}
             ],
         }),
     ]
