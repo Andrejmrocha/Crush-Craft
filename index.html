@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Crushed-Craft</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ranking.css">
+    <link rel="stylesheet" href="./style.css">
+    
 </head>
 <body>
-    <main>
-        <div class="container" id="container">
-            <h1>Crush Craft</h1>
-            <input type="text" id="playerName" placeholder="Nome">
-            <button id="startButton" onclick="startGame()">Iniciar jogo</button>
-            <button id="scoresButton" onclick="scores()" >Pontuação</button>
-        </div>
-    </main>
-    <script src="start.js"></script>
+    <div id="app">
+        <div id="game-container"></div>
+    </div>
+    
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>
