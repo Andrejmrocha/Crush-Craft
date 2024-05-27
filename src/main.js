@@ -15,7 +15,10 @@ const config = {
     arcade: {
         debug: false
     }
-},
+  },
+  dom: {
+    createContainer: true
+  }
 };
 
 export default new Phaser.Game(config);
