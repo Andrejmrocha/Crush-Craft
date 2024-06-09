@@ -40,7 +40,12 @@ export default class MainMenu extends Phaser.Scene {
     }).setOrigin(0.5);
     startGameButton.setInteractive({ useHandCursor: true });
     startGameButton.on('pointerdown', () => {
-      this.scene.start('Stage1')
+      if(input.node.value.trim() === '') alert('Inserir um nome')
+      else {
+        this.registry.set('playerName', input.node.value)
+        this.scene.start('Fase1')
+      }
+      
       
 
     });
@@ -61,9 +66,9 @@ export default class MainMenu extends Phaser.Scene {
       padding: {x:10, y:10},
     }).setOrigin(0.5);
     rankingButton.setInteractive({ useHandCursor: true });
-    rankingButton.on('pointerdown', function () {
-      // score = 0;
-      rankingButton.destroy();
+    rankingButton.on('pointerdown', () => {
+      this.scene.start('Ranking')
+      
 
     });
 
@@ -80,12 +85,12 @@ export default class MainMenu extends Phaser.Scene {
       fill: '#FFF', 
       backgroundColor: '#2d2d2d', 
       fontFamily: 'Helvetica',
-      padding: {x:79, y:10},
+      padding: {x:79.5, y:10},
     }).setOrigin(0.5);
     tutorialButton.setInteractive({ useHandCursor: true });
-    tutorialButton.on('pointerdown', function () {
+    tutorialButton.on('pointerdown', () => {
       // score = 0;
-      tutorialButton.destroy();
+      this.scene.start('Tutorial')
 
     });
 
@@ -95,6 +100,27 @@ export default class MainMenu extends Phaser.Scene {
 
     tutorialButton.on('pointerout', () => {
       tutorialButton.setBackgroundColor('#2d2d2d');
+    });
+
+    const creditosButton = this.add.text(width / 2, 531, 'Créditos', { 
+      fontSize: '24px', 
+      fill: '#FFF', 
+      backgroundColor: '#2d2d2d', 
+      fontFamily: 'Helvetica',
+      padding: {x:74.5, y:10},
+    }).setOrigin(0.5);
+    creditosButton.setInteractive({ useHandCursor: true });
+    creditosButton.on('pointerdown', () => {
+      this.scene.start('Creditos')
+
+    });
+
+    creditosButton.on('pointerover', () => {
+      creditosButton.setBackgroundColor('#8d8d8d');
+    });
+
+    creditosButton.on('pointerout', () => {
+      creditosButton.setBackgroundColor('#2d2d2d');
     });
 
   }

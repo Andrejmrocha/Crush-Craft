@@ -1,11 +1,43 @@
+import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+import { addDoc, collection, getFirestore, doc, updateDoc } from "firebase/firestore";
+
 import { Scene } from "phaser";
 
-export default class Stage1 extends Scene {
-    constructor() {
-        super('Stage1');
-        this.totalColunas = 12;
-        this.totalLinhas = 5;
+var config = {
+    apiKey: "AIzaSyDrUK2Xt1HZyUKT2rf5xywJMCsOWJHLz4Q",
+    authDomain: "crushed-craft.firebaseapp.com",
+    databaseURL: "https://crushed-craft-default-rtdb.firebaseio.com",
+    projectId: "crushed-craft",
+    storageBucket: "crushed-craft.appspot.com",
+    messagingSenderId: "564586667510",
+    appId: "1:564586667510:web:9dd28f5d3ed853c2023bd7",
+    measurementId: "G-GG4CPNN526"
+};
 
+const app = initializeApp(config)
+const analytics = getAnalytics(app)
+const db = getFirestore(app)
+
+
+export default class Fase2 extends Scene {
+    constructor() {
+        super('Fase2');
+        this.totalColunas = 8;
+        this.totalLinhas = 5;
+        this.salvou = false
+
+    }
+
+    async updScore(id, newScore) {
+        try {
+            const scoreDoc = doc(db, 'pontuacao', id)
+            await updateDoc(scoreDoc, {
+                pontos: newScore
+            })
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     preload() {
@@ -25,12 +57,13 @@ export default class Stage1 extends Scene {
     }
 
     create() {
+        this.player = this.registry.get('playerName')
         const { width, height } = this.sys.game.config;
         this.jogoIniciou = false;
         this.start = false;
         this.restart = false;
-        this.pontuacao = 0;
-        this.vidas = 5;
+        this.pontuacao = this.registry.get('pontuacao_atual');
+        this.vidas = this.registry.get('vidas');
         this.fimDeJogo = false;
         this.end = false;
 
@@ -49,16 +82,18 @@ export default class Stage1 extends Scene {
         for (let linha = 0; linha < this.totalLinhas; linha++) {
             var linhaBlocos = this.physics.add.staticGroup();
 
-            for (let coluna = 1; coluna < this.totalColunas; coluna++) {
+            for (let coluna = 0; coluna < this.totalColunas; coluna++) {
+                const isBorda = linha === 0 || linha === this.totalLinhas - 1 || coluna === 0 || coluna === this.totalColunas - 1;
 
-                linhaBlocos.create(coluna * 50, 80 + linha * 50, 'bloco_' + this.gerarAleatorio(1, 9));
-
+                if (isBorda) {
+                    linhaBlocos.create(95 + coluna * 60, 120 + linha * 60, 'bloco_' + this.gerarAleatorio(1, 9));
+                }
             }
 
             this.blocos.push(linhaBlocos);
         }
 
-        
+
 
         this.blocos.forEach((linha) => {
             linha.children.iterate((bloco) => {
@@ -87,7 +122,7 @@ export default class Stage1 extends Scene {
         this.cursor = this.input.keyboard.createCursorKeys();
 
         // Texto pontuação
-        this.textoScore = this.add.text(24, 16, 'Pontuação: 0', {
+        this.textoScore = this.add.text(24, 16, `Pontuação: ${this.registry.get('pontuacao_atual')}`, {
             fontSize: '24px',
             fill: '#fff',
             fontFamily: 'Helvetica'
@@ -95,15 +130,49 @@ export default class Stage1 extends Scene {
 
         // Criação dos elementos de vida
         this.vidasGrupo = [];
-        for (let i = 481, x = 1; i < 562; i += 20) {
-            if (x % 2 != 0) {
-                this.vidasGrupo.push(this.physics.add.image(i, 30, 'vida'))
-            } else {
-                this.vidasGrupo.push(this.physics.add.image(i, 30, 'vida_invert'))
-            }
+        switch (this.vidas) {
+            case 1:
+                this.vidasGrupo.push(this.physics.add.image(481, 30, 'vida'))
+                this.vidasGrupo.push(this.physics.add.image(501, 30, 'vida_vazia_invert'))
+                this.vidasGrupo.push(this.physics.add.image(521, 30, 'vida_vazia'))
+                this.vidasGrupo.push(this.physics.add.image(541, 30, 'vida_vazia_invert'))
+                this.vidasGrupo.push(this.physics.add.image(561, 30, 'vida_vazia'))
+                break;
+            case 2:
+                this.vidasGrupo.push(this.physics.add.image(481, 30, 'vida'))
+                this.vidasGrupo.push(this.physics.add.image(501, 30, 'vida_invert'))
+                this.vidasGrupo.push(this.physics.add.image(521, 30, 'vida_vazia'))
+                this.vidasGrupo.push(this.physics.add.image(541, 30, 'vida_vazia_invert'))
+                this.vidasGrupo.push(this.physics.add.image(561, 30, 'vida_vazia'))
+                break;
+            case 3:
+                this.vidasGrupo.push(this.physics.add.image(481, 30, 'vida'))
+                this.vidasGrupo.push(this.physics.add.image(501, 30, 'vida_invert'))
+                this.vidasGrupo.push(this.physics.add.image(521, 30, 'vida'))
+                this.vidasGrupo.push(this.physics.add.image(541, 30, 'vida_vazia_invert'))
+                this.vidasGrupo.push(this.physics.add.image(561, 30, 'vida_vazia'))
+                break;
+            case 4:
+                this.vidasGrupo.push(this.physics.add.image(481, 30, 'vida'))
+                this.vidasGrupo.push(this.physics.add.image(501, 30, 'vida_invert'))
+                this.vidasGrupo.push(this.physics.add.image(521, 30, 'vida'))
+                this.vidasGrupo.push(this.physics.add.image(541, 30, 'vida_invert'))
+                this.vidasGrupo.push(this.physics.add.image(561, 30, 'vida_vazia'))
+                break;
 
-            x++;
-        }
+            default:
+                for (let i = 481, x = 1; i < 562; i += 20) {
+                    if (x % 2 != 0) {
+                        this.vidasGrupo.push(this.physics.add.image(i, 30, 'vida'))
+                    } else {
+                        this.vidasGrupo.push(this.physics.add.image(i, 30, 'vida_invert'))
+                    }
+
+                    x++;
+                }
+                break;
+            }
+    
     }
 
     update() {
@@ -170,17 +239,7 @@ export default class Stage1 extends Scene {
                     textoRestarte.destroy();
 
                     this.bola.setVelocityX(ultimaVelocidade);
-                    if (this.contarDestruidos() <= 12) {
-                        this.bola.setVelocityY(-300);
-                    } else if (this.contarDestruidos() < 24) {
-                        this.bola.setVelocityY(-350);
-                    } else if (this.contarDestruidos() < 36) {
-                        this.bola.setVelocityY(-410);
-                    } else if (this.contarDestruidos() < 48) {
-                        this.bola.setVelocityY(-480);
-                    } else {
-                        this.bola.setVelocityY(-560);
-                    }
+                    this.bola.setVelocityY(-300);
 
                 });
             }
@@ -203,7 +262,7 @@ export default class Stage1 extends Scene {
             this.vidasGrupo.push(this.physics.add.image(481, 30, 'vida_vazia'))
             this.sem_vidas()
             if (!this.restart) {
-                this.botaoRestart = this.add.text(width / 2, 480, 'Reiniciar', {
+                this.botaoRestart = this.add.text(width / 2, 460, 'Reiniciar', {
                     fontSize: '24px',
                     fill: '#FFF',
                     backgroundColor: '#2d2d2d',
@@ -213,8 +272,8 @@ export default class Stage1 extends Scene {
                 this.botaoRestart.setInteractive({ useHandCursor: true });
                 this.botaoRestart.on('pointerdown', () => {
                     this.pontuacao = 0;
-                    this.scene.restart();
-
+                    this.salvou = false;
+                    this.scene.start('Fase1');
 
                 });
 
@@ -225,12 +284,35 @@ export default class Stage1 extends Scene {
                 this.botaoRestart.on('pointerout', () => {
                     this.botaoRestart.setBackgroundColor('#2d2d2d');
                 });
+
+                this.botaoMenu = this.add.text(width / 2, 515, 'Menu', {
+                    fontSize: '24px',
+                    fill: '#FFF',
+                    backgroundColor: '#2d2d2d',
+                    fontFamily: 'Helvetica',
+                    padding: { x: 16, y: 10 }
+                }).setOrigin(0.5, 0.5);
+                this.botaoMenu.setInteractive({ useHandCursor: true });
+                this.botaoMenu.on('pointerdown', () => {
+                    this.salvou = false;
+                    this.scene.start('MainMenu')
+
+                });
+
+                this.botaoMenu.on('pointerover', () => {
+                    this.botaoMenu.setBackgroundColor('#8d8d8d');
+                });
+
+                this.botaoMenu.on('pointerout', () => {
+                    this.botaoMenu.setBackgroundColor('#2d2d2d');
+                });
+
                 this.restart = true;
                 this.start = false;
             }
         }
 
-        if (this.contarDestruidos() == 55) {
+        if (this.contarDestruidos() == 22) {
             this.bola_destruida_x = this.bola.x
             this.bola_destruida_y = this.bola.y
             this.bola.setVelocityX(0)
@@ -239,10 +321,10 @@ export default class Stage1 extends Scene {
 
             if (!this.end) {
                 setTimeout(() => {
-                    this.textoNivelConcluido = this.add.text(this.bola_destruida_x, this.bola_destruida_y, 'Nível concluído', { 
-                        fontSize: '24px', 
-                        fill: '#fff', 
-                        fontFamily: 'Helvetica' 
+                    this.textoNivelConcluido = this.add.text(this.bola_destruida_x, this.bola_destruida_y, 'Nível concluído', {
+                        fontSize: '24px',
+                        fill: '#fff',
+                        fontFamily: 'Helvetica'
                     }).setScale(0.1).setOrigin(0.5, 0.5).setShadow(2, 2, '#77FF00', 10, false, true);;
                 }, 700)
                 this.end = true;
@@ -256,15 +338,47 @@ export default class Stage1 extends Scene {
                 duration: 1000,
                 ease: 'Linear',
             })
-            this.botaoMenu = this.add.text(width / 2, 500, 'Menu', { 
-                fontSize: '24px', 
-                fill: '#FFF', 
-                backgroundColor: '#2d2d2d', 
+
+            if (!this.salvou) {
+                this.updScore(this.registry.get('id_pontuacao_atual'), this.pontuacao)
+                this.salvou = true
+            }
+
+            this.proximoNivel = this.add.text(width / 2, 465, 'Próximo Nível', {
+                fontSize: '24px',
+                fill: '#FFF',
+                backgroundColor: '#2d2d2d',
                 fontFamily: 'Helvetica',
-                padding: {x: 16, y: 10}
+                padding: { x: 16, y: 10 }
+            }).setOrigin(0.5, 0.5);
+            this.proximoNivel.setInteractive({ useHandCursor: true });
+            this.proximoNivel.on('pointerdown', () => {
+                this.salvou = false;
+                this.registry.set('pontuacao_atual', this.pontuacao);
+                this.registry.set('vidas', this.vidas);
+                this.scene.start('Fase3')
+
+            });
+
+            this.proximoNivel.on('pointerover', () => {
+                this.proximoNivel.setBackgroundColor('#8d8d8d');
+            });
+
+            this.proximoNivel.on('pointerout', () => {
+                this.proximoNivel.setBackgroundColor('#2d2d2d');
+            });
+
+
+            this.botaoMenu = this.add.text(width / 2, 515, 'Menu', {
+                fontSize: '24px',
+                fill: '#FFF',
+                backgroundColor: '#2d2d2d',
+                fontFamily: 'Helvetica',
+                padding: { x: 16, y: 10 }
             }).setOrigin(0.5, 0.5);
             this.botaoMenu.setInteractive({ useHandCursor: true });
             this.botaoMenu.on('pointerdown', () => {
+                this.salvou = false;
                 this.scene.start('MainMenu')
 
             });
@@ -286,8 +400,7 @@ export default class Stage1 extends Scene {
 
     atualizarScore(bloco) {
         bloco.destroy();
-        this.atualizarVelocidade();
-        this.pontuacao += this.extrairNumero(bloco.texture.key);
+        this.pontuacao += this.extrairNumero(bloco.texture.key) * this.vidas;
         this.textoScore.setText('Pontuação: ' + this.pontuacao);
     }
 
@@ -299,38 +412,7 @@ export default class Stage1 extends Scene {
     contarDestruidos() {
         var contagem = []
         this.blocos.every(element => contagem.push(element.children.entries.length));
-        return 55 - contagem.reduce((contador, valor) => contador + valor, 0)
-    }
-
-    atualizarVelocidade() {
-        switch (this.contarDestruidos()) {
-            case 11:
-                if (this.bola.body.velocity.x < 0) this.bola.setVelocityX(this.bola.body.velocity.x - 50)
-                else this.bola.setVelocityX(this.bola.body.velocity.x + 50)
-                this.bola.setVelocityY(350)
-                break;
-
-            case 22:
-                if (this.bola.body.velocity.x < 0) this.bola.setVelocityX(this.bola.body.velocity.x - 60)
-                else this.bola.setVelocityX(this.bola.body.velocity.x + 60)
-                this.bola.setVelocityY(410)
-                break;
-
-            case 33:
-                if (this.bola.body.velocity.x < 0) this.bola.setVelocityX(this.bola.body.velocity.x - 75)
-                else this.bola.setVelocityX(this.bola.body.velocity.x + 75)
-                this.bola.setVelocityY(480)
-                break;
-
-            case 44:
-                if (this.bola.body.velocity.x < 0) this.bola.setVelocityX(this.bola.body.velocity.x - 95)
-                else this.bola.setVelocityX(this.bola.body.velocity.x + 95)
-                this.bola.setVelocityY(560)
-                break;
-
-            default:
-                break;
-        }
+        return 22 - contagem.reduce((contador, valor) => contador + valor, 0)
     }
 
     sem_vidas() {
@@ -343,6 +425,10 @@ export default class Stage1 extends Scene {
                 fontFamily: 'Helvetica'
             }).setOrigin(0.5, 0.5).setShadow(2, 2, '#FF0000', 10, false, true);
             this.fimDeJogo = true;
+            if (!this.salvou) {
+                this.updScore(this.registry.get('id_pontuacao_atual'), this.pontuacao)
+                this.salvou = true
+            }
         }
 
     }
@@ -354,10 +440,10 @@ export default class Stage1 extends Scene {
             scaleY: 0,
             duration: 700,
             ease: 'Linear',
-    
-            onComplete: () => {          
+
+            onComplete: () => {
                 this.bola.setVisible(false);
-                
+
             }
         });
     }

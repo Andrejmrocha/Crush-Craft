@@ -22,12 +22,11 @@ DESCREVA AS FASES DO JOGO.
 | ----- | ----------- |
 | 1     | Fase inicial simples, para o jogador se adaptar aos controles e movimentação |
 | 2     | Possui mais blocos e uma velocidade maior de deslocamento da bola |
-| 3     | Adição de power ups |
-| 4     | Fase mais difícil com power ups falsos |
+
 
 ## Esquema de Pontuação
 
-A cada bloco quebrado o score aumenta 10 pontos, em caso de uma longa sequência de acertos esse aumento de pontuação dobra. O jogador possui 3 vidas, perde uma vida sempre que a bola tocar a linha inferior da tela.
+A cada bloco quebrado o score aumenta a quantidade de pontos equivalente ao número do bloco multiplicado pelo número de vidas restantes. O jogador possui 5 vidas, perde uma vida sempre que a bola tocar a linha inferior da tela.
 
 
 ## Requisitos
