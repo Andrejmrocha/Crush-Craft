@@ -1,6 +1,6 @@
 # `Crush Craft`
 
-* Link do jogo: 
+* Link do jogo: https://crushed-craft.vercel.app/
 
 ## Motivação
 
@@ -8,11 +8,11 @@ Estou buscando fazer um remake de um jogo que me divertiu muito durante a minha 
 
 ## Objetivo
 
-Aprender de forma prática a conduzir um projeto, e conhecer melhor as ferramentas que temos a disposição para melhor no gerenciamento, além de obter mais experiência no uso de JavaScript
+O objetivo do jogador é controlar uma barra na parte inferior da tela para manter uma bola em movimento, quebrando blocos ao longo do caminho.
 
 ## Valor Agregado
 
-Busco fazer um design mais moderno que foge das imagens clássicas.
+Busco fazer um design atualizado, um pouco diferente dos visuais clássicos.
 
 ## Fases
 
@@ -20,21 +20,23 @@ DESCREVA AS FASES DO JOGO.
 
 | Fases | Descrição |
 | ----- | ----------- |
-| 1     | Fase inicial simples, para o jogador se adaptar aos controles e movimentação |
-| 2     | Possui mais blocos e uma velocidade maior de deslocamento da bola |
+| 1     | Fase inicial simples, para o jogador se adaptar aos controles e movimentação, possui 20 blocos |
+| 2     | Nessa fase 22 blocos serão destruídos com um layout um pouco mais difícil |
+| 3     | Uma modificação na velocidade da bola, que é acrescentada a cada 12 blocos destruídos. |
 
 
 ## Esquema de Pontuação
 
-A cada bloco quebrado o score aumenta a quantidade de pontos equivalente ao número do bloco multiplicado pelo número de vidas restantes. O jogador possui 5 vidas, perde uma vida sempre que a bola tocar a linha inferior da tela.
+A cada bloco quebrado o score aumenta a quantidade de pontos equivalente ao número do bloco, multiplicado pelo número de vidas restantes. O jogador possui 5 vidas, perde uma vida sempre que a bola tocar a linha inferior da tela. A contagem das vidas e pontuação é contínua ao longo das fases.
 
 
 ## Requisitos
 
-1. Movimentação do cursor
-2. Destruição dos blocos
-3. Movimentação da bola
-4. Movimentação de power ups que irão aparecer aleatoriamente
+1. Menu principal
+2. Ranking
+3. Tutorial
+4. Créditos
+5. Fases
 
 ### Personas
 
@@ -46,5 +48,11 @@ DIAGRAMA COM O PROTOTIPO DO JOGO
 
 ## Tecnologias e Ferramentas utilizadas
 
-1. Phaser3
-2. Adobe Photoshop
+1. JavaScript
+2. Phaser3
+3. Webpack
+4. Vercel
+5. Github
+6. Visual Studio Code
+7. Adobe Photoshop
+8. Canva
