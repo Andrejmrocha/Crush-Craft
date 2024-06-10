@@ -44,7 +44,7 @@ A cada bloco quebrado o score aumenta a quantidade de pontos equivalente ao núm
 
 ## Protótipos de Tela
 
-DIAGRAMA COM O PROTOTIPO DO JOGO
+![wireframe]()
 
 ## Tecnologias e Ferramentas utilizadas
 
@@ -56,3 +56,4 @@ DIAGRAMA COM O PROTOTIPO DO JOGO
 6. Visual Studio Code
 7. Adobe Photoshop
 8. Canva
+9. Figma
