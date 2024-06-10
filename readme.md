@@ -44,7 +44,7 @@ A cada bloco quebrado o score aumenta a quantidade de pontos equivalente ao núm
 
 ## Protótipos de Tela
 
-![wireframe]()
+![wireframe](https://github.com/Andrejmrocha/Crushed-Craft/blob/main/imagens_github/wireframe.png)
 
 ## Tecnologias e Ferramentas utilizadas
 
